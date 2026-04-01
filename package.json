@@ -1,0 +1,32 @@
+{
+  "name": "cmmf-to-mermaid-renderer",
+  "version": "0.1.0",
+  "description": "CLI and library for rendering Mermaid diagrams from CMMF repositories.",
+  "type": "module",
+  "packageManager": "npm@11.11.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=11.10.0"
+  },
+  "bin": {
+    "cmmf-mermaid": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist coverage .tmp",
+    "dev": "node --import tsx ./src/cli.ts",
+    "render": "node --import tsx ./src/cli.ts render",
+    "test": "node --import tsx --test src/**/*.test.ts",
+    "check": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "yaml": "^2.8.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
