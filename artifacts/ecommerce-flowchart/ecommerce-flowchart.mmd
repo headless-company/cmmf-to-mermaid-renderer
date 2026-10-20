@@ -1,0 +1,848 @@
+%%{init: {"flowchart": {"htmlLabels": false, "curve": "linear"}}}%%
+flowchart TB
+    %% Each field is a real node; relationships originate at that field.
+    %% Solid arrows: references. Dashed arrows: embedded objects.
+    %% Invisible links retain field order and are not content relationships.
+    %% Targets are model ID header nodes, not fields on the target model.
+    classDef model fill:#25233b,color:#ffffff,stroke:#25233b,font-weight:bold
+    classDef scalar fill:#ffffff,color:#25233b,stroke:#c9c7d4
+    classDef reference fill:#ede9ff,color:#25233b,stroke:#7963cb,stroke-width:2px
+    classDef embedded fill:#e5f5f0,color:#173e34,stroke:#418976,stroke-width:2px
+    subgraph g0["Address · object"]
+        direction TB
+        m0["address"]:::model
+        %% address.first-name
+        m0_f0["First name : string · optional"]:::scalar
+        m0 ~~~ m0_f0
+        %% address.last-name
+        m0_f1["Last name : string · optional"]:::scalar
+        m0_f0 ~~~ m0_f1
+        %% address.company
+        m0_f2["Company : string · optional"]:::scalar
+        m0_f1 ~~~ m0_f2
+        %% address.street
+        m0_f3["Street : string · optional"]:::scalar
+        m0_f2 ~~~ m0_f3
+        %% address.additional-line
+        m0_f4["Additional line : string · optional"]:::scalar
+        m0_f3 ~~~ m0_f4
+        %% address.city
+        m0_f5["City : string · optional"]:::scalar
+        m0_f4 ~~~ m0_f5
+        %% address.postal-code
+        m0_f6["Postal code : string · optional"]:::scalar
+        m0_f5 ~~~ m0_f6
+        %% address.country
+        m0_f7["Country : string · required"]:::scalar
+        m0_f6 ~~~ m0_f7
+        %% address.region
+        m0_f8["Region : string · optional"]:::scalar
+        m0_f7 ~~~ m0_f8
+    end
+
+    subgraph g1["Attribute Definition · object"]
+        direction TB
+        m1["attribute-definition"]:::model
+        %% attribute-definition.name
+        m1_f0["Name : string · required · localized"]:::scalar
+        m1 ~~~ m1_f0
+        %% attribute-definition.key
+        m1_f1["Key : string · required"]:::scalar
+        m1_f0 ~~~ m1_f1
+        %% attribute-definition.value-type
+        m1_f2["Value type : enum · optional"]:::scalar
+        m1_f1 ~~~ m1_f2
+        %% attribute-definition.required
+        m1_f3["Required : boolean · optional"]:::scalar
+        m1_f2 ~~~ m1_f3
+        %% attribute-definition.localised
+        m1_f4["Localised : boolean · optional"]:::scalar
+        m1_f3 ~~~ m1_f4
+        %% attribute-definition.allowed-values
+        m1_f5["Allowed values : string[] · optional"]:::scalar
+        m1_f4 ~~~ m1_f5
+        %% attribute-definition.constraint
+        m1_f6["Constraint : string · optional"]:::scalar
+        m1_f5 ~~~ m1_f6
+    end
+
+    subgraph g2["Attribute Value · object"]
+        direction TB
+        m2["attribute-value"]:::model
+        %% attribute-value.definition
+        m2_f0["Definition : reference · required"]:::reference
+        m2 ~~~ m2_f0
+        %% attribute-value.text-value
+        m2_f1["Text value : string · optional"]:::scalar
+        m2_f0 ~~~ m2_f1
+        %% attribute-value.number-value
+        m2_f2["Number value : number · optional"]:::scalar
+        m2_f1 ~~~ m2_f2
+        %% attribute-value.boolean-value
+        m2_f3["Boolean value : boolean · optional"]:::scalar
+        m2_f2 ~~~ m2_f3
+        %% attribute-value.structured-value
+        m2_f4["Structured value : json · optional"]:::scalar
+        m2_f3 ~~~ m2_f4
+    end
+
+    subgraph g3["Brand · entry"]
+        direction TB
+        m3["brand"]:::model
+        %% brand.name
+        m3_f0["Name : string · required · localized"]:::scalar
+        m3 ~~~ m3_f0
+        %% brand.slug
+        m3_f1["Slug : slug · required"]:::scalar
+        m3_f0 ~~~ m3_f1
+        %% brand.logo
+        m3_f2["Logo : asset · optional"]:::scalar
+        m3_f1 ~~~ m3_f2
+        %% brand.story
+        m3_f3["Story : richText · optional · localized"]:::scalar
+        m3_f2 ~~~ m3_f3
+        %% brand.website
+        m3_f4["Website : string · optional"]:::scalar
+        m3_f3 ~~~ m3_f4
+        %% brand.seo
+        m3_f5["Seo : object · optional"]:::embedded
+        m3_f4 ~~~ m3_f5
+    end
+
+    subgraph g4["Campaign · entry"]
+        direction TB
+        m4["campaign"]:::model
+        %% campaign.name
+        m4_f0["Name : string · required · localized"]:::scalar
+        m4 ~~~ m4_f0
+        %% campaign.slug
+        m4_f1["Slug : slug · required"]:::scalar
+        m4_f0 ~~~ m4_f1
+        %% campaign.brief
+        m4_f2["Brief : richText · optional · localized"]:::scalar
+        m4_f1 ~~~ m4_f2
+        %% campaign.starts-at
+        m4_f3["Starts at : datetime · optional"]:::scalar
+        m4_f2 ~~~ m4_f3
+        %% campaign.ends-at
+        m4_f4["Ends at : datetime · optional"]:::scalar
+        m4_f3 ~~~ m4_f4
+        %% campaign.selection
+        m4_f5["Selection : reference · optional"]:::reference
+        m4_f4 ~~~ m4_f5
+        %% campaign.pages
+        m4_f6["Pages : reference[] · optional"]:::reference
+        m4_f5 ~~~ m4_f6
+        %% campaign.channels
+        m4_f7["Channels : enum[] · optional"]:::scalar
+        m4_f6 ~~~ m4_f7
+    end
+
+    subgraph g5["Category · taxonomy"]
+        direction TB
+        m5["category"]:::model
+        %% category.name
+        m5_f0["Name : string · required · localized"]:::scalar
+        m5 ~~~ m5_f0
+        %% category.slug
+        m5_f1["Slug : slug · required"]:::scalar
+        m5_f0 ~~~ m5_f1
+        %% category.description
+        m5_f2["Description : text · optional"]:::scalar
+        m5_f1 ~~~ m5_f2
+        %% category.parent
+        m5_f3["Parent : reference · optional"]:::reference
+        m5_f2 ~~~ m5_f3
+        %% category.image
+        m5_f4["Image : asset · optional"]:::scalar
+        m5_f3 ~~~ m5_f4
+        %% category.sort-order
+        m5_f5["Sort order : number · optional"]:::scalar
+        m5_f4 ~~~ m5_f5
+        %% category.seo
+        m5_f6["Seo : object · optional"]:::embedded
+        m5_f5 ~~~ m5_f6
+    end
+
+    subgraph g6["Channel · entry"]
+        direction TB
+        m6["channel"]:::model
+        %% channel.name
+        m6_f0["Name : string · required · localized"]:::scalar
+        m6 ~~~ m6_f0
+        %% channel.key
+        m6_f1["Key : string · required"]:::scalar
+        m6_f0 ~~~ m6_f1
+        %% channel.roles
+        m6_f2["Roles : enum · optional"]:::scalar
+        m6_f1 ~~~ m6_f2
+        %% channel.description
+        m6_f3["Description : text · optional"]:::scalar
+        m6_f2 ~~~ m6_f3
+        %% channel.address
+        m6_f4["Address : object · optional"]:::embedded
+        m6_f3 ~~~ m6_f4
+    end
+
+    subgraph g7["Customer Group · entry"]
+        direction TB
+        m7["customer-group"]:::model
+        %% customer-group.name
+        m7_f0["Name : string · required · localized"]:::scalar
+        m7 ~~~ m7_f0
+        %% customer-group.key
+        m7_f1["Key : string · optional"]:::scalar
+        m7_f0 ~~~ m7_f1
+        %% customer-group.description
+        m7_f2["Description : text · optional"]:::scalar
+        m7_f1 ~~~ m7_f2
+    end
+
+    subgraph g8["Editorial Card · component"]
+        direction TB
+        m8["editorial-card"]:::model
+        %% editorial-card.heading
+        m8_f0["Heading : string · required"]:::scalar
+        m8 ~~~ m8_f0
+        %% editorial-card.summary
+        m8_f1["Summary : text · optional"]:::scalar
+        m8_f0 ~~~ m8_f1
+        %% editorial-card.image
+        m8_f2["Image : asset · optional"]:::scalar
+        m8_f1 ~~~ m8_f2
+        %% editorial-card.link
+        m8_f3["Link : object · optional"]:::embedded
+        m8_f2 ~~~ m8_f3
+        %% editorial-card.related-product
+        m8_f4["Related product : reference · optional"]:::reference
+        m8_f3 ~~~ m8_f4
+    end
+
+    subgraph g9["Hero · component"]
+        direction TB
+        m9["hero"]:::model
+        %% hero.headline
+        m9_f0["Headline : string · required · localized"]:::scalar
+        m9 ~~~ m9_f0
+        %% hero.summary
+        m9_f1["Summary : text · optional · localized"]:::scalar
+        m9_f0 ~~~ m9_f1
+        %% hero.image
+        m9_f2["Image : asset · optional"]:::scalar
+        m9_f1 ~~~ m9_f2
+        %% hero.mobile-image
+        m9_f3["Mobile image : asset · optional"]:::scalar
+        m9_f2 ~~~ m9_f3
+        %% hero.call-to-action
+        m9_f4["Call to action : object · optional"]:::embedded
+        m9_f3 ~~~ m9_f4
+        %% hero.theme
+        m9_f5["Theme : enum · optional"]:::scalar
+        m9_f4 ~~~ m9_f5
+    end
+
+    subgraph g10["Inventory Entry · entry"]
+        direction TB
+        m10["inventory-entry"]:::model
+        %% inventory-entry.sku
+        m10_f0["Sku : string · required"]:::scalar
+        m10 ~~~ m10_f0
+        %% inventory-entry.supply-channel
+        m10_f1["Supply channel : reference · optional"]:::reference
+        m10_f0 ~~~ m10_f1
+        %% inventory-entry.warehouse
+        m10_f2["Warehouse : reference · optional"]:::reference
+        m10_f1 ~~~ m10_f2
+        %% inventory-entry.quantity-on-stock
+        m10_f3["Quantity on stock : number · optional"]:::scalar
+        m10_f2 ~~~ m10_f3
+        %% inventory-entry.restockable-in-days
+        m10_f4["Restockable in days : number · optional"]:::scalar
+        m10_f3 ~~~ m10_f4
+        %% inventory-entry.expected-delivery
+        m10_f5["Expected delivery : datetime · optional"]:::scalar
+        m10_f4 ~~~ m10_f5
+    end
+
+    subgraph g11["Landing Page · entry"]
+        direction TB
+        m11["landing-page"]:::model
+        %% landing-page.name
+        m11_f0["Name : string · required · localized"]:::scalar
+        m11 ~~~ m11_f0
+        %% landing-page.slug
+        m11_f1["Slug : slug · required"]:::scalar
+        m11_f0 ~~~ m11_f1
+        %% landing-page.seo
+        m11_f2["Seo : object · optional"]:::embedded
+        m11_f1 ~~~ m11_f2
+        %% landing-page.blocks
+        m11_f3["Blocks : reference[] · optional"]:::reference
+        m11_f2 ~~~ m11_f3
+        %% landing-page.campaign
+        m11_f4["Campaign : reference · optional"]:::reference
+        m11_f3 ~~~ m11_f4
+        %% landing-page.publish-at
+        m11_f5["Publish at : datetime · optional"]:::scalar
+        m11_f4 ~~~ m11_f5
+    end
+
+    subgraph g12["Link · object"]
+        direction TB
+        m12["link"]:::model
+        %% link.label
+        m12_f0["Label : string · required"]:::scalar
+        m12 ~~~ m12_f0
+        %% link.url
+        m12_f1["Url : string · optional"]:::scalar
+        m12_f0 ~~~ m12_f1
+        %% link.target
+        m12_f2["Target : reference · optional"]:::reference
+        m12_f1 ~~~ m12_f2
+        %% link.open-in-new-tab
+        m12_f3["Open in new tab : boolean · optional"]:::scalar
+        m12_f2 ~~~ m12_f3
+    end
+
+    subgraph g13["Money · object"]
+        direction TB
+        m13["money"]:::model
+        %% money.currency
+        m13_f0["Currency : string · required"]:::scalar
+        m13 ~~~ m13_f0
+        %% money.cent-amount
+        m13_f1["Cent amount : number · required"]:::scalar
+        m13_f0 ~~~ m13_f1
+        %% money.fraction-digits
+        m13_f2["Fraction digits : number · optional"]:::scalar
+        m13_f1 ~~~ m13_f2
+    end
+
+    subgraph g14["Navigation · settings"]
+        direction TB
+        m14["navigation"]:::model
+        %% navigation.name
+        m14_f0["Name : string · required · localized"]:::scalar
+        m14 ~~~ m14_f0
+        %% navigation.items
+        m14_f1["Items : object[] · optional"]:::embedded
+        m14_f0 ~~~ m14_f1
+        %% navigation.locale
+        m14_f2["Locale : string · optional"]:::scalar
+        m14_f1 ~~~ m14_f2
+    end
+
+    subgraph g15["Navigation Item · object"]
+        direction TB
+        m15["navigation-item"]:::model
+        %% navigation-item.label
+        m15_f0["Label : string · required · localized"]:::scalar
+        m15 ~~~ m15_f0
+        %% navigation-item.destination
+        m15_f1["Destination : object · optional"]:::embedded
+        m15_f0 ~~~ m15_f1
+        %% navigation-item.children
+        m15_f2["Children : object[] · optional"]:::embedded
+        m15_f1 ~~~ m15_f2
+        %% navigation-item.highlighted
+        m15_f3["Highlighted : boolean · optional"]:::scalar
+        m15_f2 ~~~ m15_f3
+    end
+
+    subgraph g16["Physical Dimensions · object"]
+        direction TB
+        m16["physical-dimensions"]:::model
+        %% physical-dimensions.width
+        m16_f0["Width : number · optional"]:::scalar
+        m16 ~~~ m16_f0
+        %% physical-dimensions.height
+        m16_f1["Height : number · optional"]:::scalar
+        m16_f0 ~~~ m16_f1
+        %% physical-dimensions.depth
+        m16_f2["Depth : number · optional"]:::scalar
+        m16_f1 ~~~ m16_f2
+        %% physical-dimensions.unit
+        m16_f3["Unit : enum · optional"]:::scalar
+        m16_f2 ~~~ m16_f3
+        %% physical-dimensions.packaged
+        m16_f4["Packaged : boolean · optional"]:::scalar
+        m16_f3 ~~~ m16_f4
+    end
+
+    subgraph g17["Policy Page · entry"]
+        direction TB
+        m17["policy-page"]:::model
+        %% policy-page.name
+        m17_f0["Name : string · required · localized"]:::scalar
+        m17 ~~~ m17_f0
+        %% policy-page.slug
+        m17_f1["Slug : slug · required"]:::scalar
+        m17_f0 ~~~ m17_f1
+        %% policy-page.policy-type
+        m17_f2["Policy type : enum · optional"]:::scalar
+        m17_f1 ~~~ m17_f2
+        %% policy-page.body
+        m17_f3["Body : richText · optional · localized"]:::scalar
+        m17_f2 ~~~ m17_f3
+        %% policy-page.effective-from
+        m17_f4["Effective from : date · optional"]:::scalar
+        m17_f3 ~~~ m17_f4
+        %% policy-page.last-reviewed
+        m17_f5["Last reviewed : date · optional"]:::scalar
+        m17_f4 ~~~ m17_f5
+        %% policy-page.related-policies
+        m17_f6["Related policies : reference[] · optional"]:::reference
+        m17_f5 ~~~ m17_f6
+    end
+
+    subgraph g18["Price · entry"]
+        direction TB
+        m18["price"]:::model
+        %% price.key
+        m18_f0["Key : string · required"]:::scalar
+        m18 ~~~ m18_f0
+        %% price.value
+        m18_f1["Value : object · optional"]:::embedded
+        m18_f0 ~~~ m18_f1
+        %% price.discounted-value
+        m18_f2["Discounted value : object · optional"]:::embedded
+        m18_f1 ~~~ m18_f2
+        %% price.channel
+        m18_f3["Channel : reference · optional"]:::reference
+        m18_f2 ~~~ m18_f3
+        %% price.customer-group
+        m18_f4["Customer group : reference · optional"]:::reference
+        m18_f3 ~~~ m18_f4
+        %% price.country
+        m18_f5["Country : string · optional"]:::scalar
+        m18_f4 ~~~ m18_f5
+        %% price.valid-from
+        m18_f6["Valid from : datetime · optional"]:::scalar
+        m18_f5 ~~~ m18_f6
+        %% price.valid-until
+        m18_f7["Valid until : datetime · optional"]:::scalar
+        m18_f6 ~~~ m18_f7
+        %% price.tiers
+        m18_f8["Tiers : object[] · optional"]:::embedded
+        m18_f7 ~~~ m18_f8
+    end
+
+    subgraph g19["Price Tier · object"]
+        direction TB
+        m19["price-tier"]:::model
+        %% price-tier.minimum-quantity
+        m19_f0["Minimum quantity : number · required"]:::scalar
+        m19 ~~~ m19_f0
+        %% price-tier.value
+        m19_f1["Value : object · optional"]:::embedded
+        m19_f0 ~~~ m19_f1
+    end
+
+    subgraph g20["Product · entry"]
+        direction TB
+        m20["product"]:::model
+        %% product.name
+        m20_f0["Name : string · required · localized"]:::scalar
+        m20 ~~~ m20_f0
+        %% product.slug
+        m20_f1["Slug : slug · required"]:::scalar
+        m20_f0 ~~~ m20_f1
+        %% product.summary
+        m20_f2["Summary : text · optional · localized"]:::scalar
+        m20_f1 ~~~ m20_f2
+        %% product.description
+        m20_f3["Description : richText · optional · localized"]:::scalar
+        m20_f2 ~~~ m20_f3
+        %% product.product-type
+        m20_f4["Product type : reference · required"]:::reference
+        m20_f3 ~~~ m20_f4
+        %% product.brand
+        m20_f5["Brand : reference · optional"]:::reference
+        m20_f4 ~~~ m20_f5
+        %% product.categories
+        m20_f6["Categories : reference[] · optional"]:::reference
+        m20_f5 ~~~ m20_f6
+        %% product.variants
+        m20_f7["Variants : reference[] · required"]:::reference
+        m20_f6 ~~~ m20_f7
+        %% product.gallery
+        m20_f8["Gallery : asset[] · optional"]:::scalar
+        m20_f7 ~~~ m20_f8
+        %% product.seo
+        m20_f9["Seo : object · optional"]:::embedded
+        m20_f8 ~~~ m20_f9
+        %% product.related-products
+        m20_f10["Related products : reference[] · optional"]:::reference
+        m20_f9 ~~~ m20_f10
+        %% product.size-guide
+        m20_f11["Size guide : reference · optional"]:::reference
+        m20_f10 ~~~ m20_f11
+        %% product.launch-date
+        m20_f12["Launch date : date · optional"]:::scalar
+        m20_f11 ~~~ m20_f12
+        %% product.search-keywords
+        m20_f13["Search keywords : string[] · optional"]:::scalar
+        m20_f12 ~~~ m20_f13
+    end
+
+    subgraph g21["Product Grid · component"]
+        direction TB
+        m21["product-grid"]:::model
+        %% product-grid.heading
+        m21_f0["Heading : string · optional · localized"]:::scalar
+        m21 ~~~ m21_f0
+        %% product-grid.selection
+        m21_f1["Selection : reference · optional"]:::reference
+        m21_f0 ~~~ m21_f1
+        %% product-grid.products
+        m21_f2["Products : reference[] · optional"]:::reference
+        m21_f1 ~~~ m21_f2
+        %% product-grid.maximum-products
+        m21_f3["Maximum products : number · optional"]:::scalar
+        m21_f2 ~~~ m21_f3
+        %% product-grid.call-to-action
+        m21_f4["Call to action : object · optional"]:::embedded
+        m21_f3 ~~~ m21_f4
+    end
+
+    subgraph g22["Product Selection · entry"]
+        direction TB
+        m22["product-selection"]:::model
+        %% product-selection.name
+        m22_f0["Name : string · required · localized"]:::scalar
+        m22 ~~~ m22_f0
+        %% product-selection.key
+        m22_f1["Key : string · optional"]:::scalar
+        m22_f0 ~~~ m22_f1
+        %% product-selection.products
+        m22_f2["Products : reference[] · optional"]:::reference
+        m22_f1 ~~~ m22_f2
+        %% product-selection.mode
+        m22_f3["Mode : enum · optional"]:::scalar
+        m22_f2 ~~~ m22_f3
+        %% product-selection.description
+        m22_f4["Description : text · optional"]:::scalar
+        m22_f3 ~~~ m22_f4
+    end
+
+    subgraph g23["Product Type · entry"]
+        direction TB
+        m23["product-type"]:::model
+        %% product-type.name
+        m23_f0["Name : string · required · localized"]:::scalar
+        m23 ~~~ m23_f0
+        %% product-type.key
+        m23_f1["Key : string · required"]:::scalar
+        m23_f0 ~~~ m23_f1
+        %% product-type.description
+        m23_f2["Description : text · optional"]:::scalar
+        m23_f1 ~~~ m23_f2
+        %% product-type.attribute-definitions
+        m23_f3["Attribute definitions : reference[] · optional"]:::reference
+        m23_f2 ~~~ m23_f3
+    end
+
+    subgraph g24["Product Variant · entry"]
+        direction TB
+        m24["product-variant"]:::model
+        %% product-variant.sku
+        m24_f0["Sku : string · required"]:::scalar
+        m24 ~~~ m24_f0
+        %% product-variant.barcode
+        m24_f1["Barcode : string · optional"]:::scalar
+        m24_f0 ~~~ m24_f1
+        %% product-variant.prices
+        m24_f2["Prices : reference[] · optional"]:::reference
+        m24_f1 ~~~ m24_f2
+        %% product-variant.inventory
+        m24_f3["Inventory : reference[] · optional"]:::reference
+        m24_f2 ~~~ m24_f3
+        %% product-variant.images
+        m24_f4["Images : asset[] · optional"]:::scalar
+        m24_f3 ~~~ m24_f4
+        %% product-variant.attributes
+        m24_f5["Attributes : object[] · optional"]:::embedded
+        m24_f4 ~~~ m24_f5
+        %% product-variant.dimensions
+        m24_f6["Dimensions : object · optional"]:::embedded
+        m24_f5 ~~~ m24_f6
+        %% product-variant.weight
+        m24_f7["Weight : number · optional"]:::scalar
+        m24_f6 ~~~ m24_f7
+        %% product-variant.is-master
+        m24_f8["Is master : boolean · optional"]:::scalar
+        m24_f7 ~~~ m24_f8
+        %% product-variant.shipping-category
+        m24_f9["Shipping category : reference · optional"]:::reference
+        m24_f8 ~~~ m24_f9
+        %% product-variant.tax-category
+        m24_f10["Tax category : reference · optional"]:::reference
+        m24_f9 ~~~ m24_f10
+    end
+
+    subgraph g25["Promotion · entry"]
+        direction TB
+        m25["promotion"]:::model
+        %% promotion.name
+        m25_f0["Name : string · required · localized"]:::scalar
+        m25 ~~~ m25_f0
+        %% promotion.description
+        m25_f1["Description : text · optional"]:::scalar
+        m25_f0 ~~~ m25_f1
+        %% promotion.status
+        m25_f2["Status : enum · optional"]:::scalar
+        m25_f1 ~~~ m25_f2
+        %% promotion.valid-from
+        m25_f3["Valid from : datetime · optional"]:::scalar
+        m25_f2 ~~~ m25_f3
+        %% promotion.valid-until
+        m25_f4["Valid until : datetime · optional"]:::scalar
+        m25_f3 ~~~ m25_f4
+        %% promotion.products
+        m25_f5["Products : reference[] · optional"]:::reference
+        m25_f4 ~~~ m25_f5
+        %% promotion.categories
+        m25_f6["Categories : reference[] · optional"]:::reference
+        m25_f5 ~~~ m25_f6
+        %% promotion.customer-groups
+        m25_f7["Customer groups : reference[] · optional"]:::reference
+        m25_f6 ~~~ m25_f7
+        %% promotion.campaign
+        m25_f8["Campaign : reference · optional"]:::reference
+        m25_f7 ~~~ m25_f8
+        %% promotion.banner
+        m25_f9["Banner : asset · optional"]:::scalar
+        m25_f8 ~~~ m25_f9
+        %% promotion.terms
+        m25_f10["Terms : text · optional"]:::scalar
+        m25_f9 ~~~ m25_f10
+    end
+
+    subgraph g26["Seo Metadata · object"]
+        direction TB
+        m26["seo-metadata"]:::model
+        %% seo-metadata.title
+        m26_f0["Title : string · optional · localized"]:::scalar
+        m26 ~~~ m26_f0
+        %% seo-metadata.description
+        m26_f1["Description : text · optional · localized"]:::scalar
+        m26_f0 ~~~ m26_f1
+        %% seo-metadata.social-image
+        m26_f2["Social image : asset · optional"]:::scalar
+        m26_f1 ~~~ m26_f2
+        %% seo-metadata.canonical-url
+        m26_f3["Canonical url : string · optional"]:::scalar
+        m26_f2 ~~~ m26_f3
+        %% seo-metadata.no-index
+        m26_f4["No index : boolean · optional"]:::scalar
+        m26_f3 ~~~ m26_f4
+    end
+
+    subgraph g27["Shipping Category · taxonomy"]
+        direction TB
+        m27["shipping-category"]:::model
+        %% shipping-category.name
+        m27_f0["Name : string · required · localized"]:::scalar
+        m27 ~~~ m27_f0
+        %% shipping-category.key
+        m27_f1["Key : string · optional"]:::scalar
+        m27_f0 ~~~ m27_f1
+        %% shipping-category.description
+        m27_f2["Description : text · optional"]:::scalar
+        m27_f1 ~~~ m27_f2
+    end
+
+    subgraph g28["Shipping Method · entry"]
+        direction TB
+        m28["shipping-method"]:::model
+        %% shipping-method.name
+        m28_f0["Name : string · required · localized"]:::scalar
+        m28 ~~~ m28_f0
+        %% shipping-method.key
+        m28_f1["Key : string · optional"]:::scalar
+        m28_f0 ~~~ m28_f1
+        %% shipping-method.description
+        m28_f2["Description : text · optional"]:::scalar
+        m28_f1 ~~~ m28_f2
+        %% shipping-method.tax-category
+        m28_f3["Tax category : reference · optional"]:::reference
+        m28_f2 ~~~ m28_f3
+        %% shipping-method.zones
+        m28_f4["Zones : reference[] · optional"]:::reference
+        m28_f3 ~~~ m28_f4
+        %% shipping-method.base-price
+        m28_f5["Base price : object · optional"]:::embedded
+        m28_f4 ~~~ m28_f5
+        %% shipping-method.estimated-days
+        m28_f6["Estimated days : number · optional"]:::scalar
+        m28_f5 ~~~ m28_f6
+    end
+
+    subgraph g29["Shipping Zone · entry"]
+        direction TB
+        m29["shipping-zone"]:::model
+        %% shipping-zone.name
+        m29_f0["Name : string · required · localized"]:::scalar
+        m29 ~~~ m29_f0
+        %% shipping-zone.countries
+        m29_f1["Countries : string[] · optional"]:::scalar
+        m29_f0 ~~~ m29_f1
+        %% shipping-zone.regions
+        m29_f2["Regions : string[] · optional"]:::scalar
+        m29_f1 ~~~ m29_f2
+    end
+
+    subgraph g30["Size Guide · entry"]
+        direction TB
+        m30["size-guide"]:::model
+        %% size-guide.name
+        m30_f0["Name : string · required · localized"]:::scalar
+        m30 ~~~ m30_f0
+        %% size-guide.instructions
+        m30_f1["Instructions : richText · optional · localized"]:::scalar
+        m30_f0 ~~~ m30_f1
+        %% size-guide.measurement-table
+        m30_f2["Measurement table : json · optional"]:::scalar
+        m30_f1 ~~~ m30_f2
+        %% size-guide.diagram
+        m30_f3["Diagram : asset · optional"]:::scalar
+        m30_f2 ~~~ m30_f3
+        %% size-guide.product-types
+        m30_f4["Product types : reference[] · optional"]:::reference
+        m30_f3 ~~~ m30_f4
+    end
+
+    subgraph g31["Store · settings"]
+        direction TB
+        m31["store"]:::model
+        %% store.name
+        m31_f0["Name : string · required · localized"]:::scalar
+        m31 ~~~ m31_f0
+        %% store.key
+        m31_f1["Key : string · required"]:::scalar
+        m31_f0 ~~~ m31_f1
+        %% store.locales
+        m31_f2["Locales : string[] · optional"]:::scalar
+        m31_f1 ~~~ m31_f2
+        %% store.currencies
+        m31_f3["Currencies : string[] · optional"]:::scalar
+        m31_f2 ~~~ m31_f3
+        %% store.distribution-channels
+        m31_f4["Distribution channels : reference[] · optional"]:::reference
+        m31_f3 ~~~ m31_f4
+        %% store.assortments
+        m31_f5["Assortments : reference[] · optional"]:::reference
+        m31_f4 ~~~ m31_f5
+        %% store.homepage
+        m31_f6["Homepage : reference · optional"]:::reference
+        m31_f5 ~~~ m31_f6
+        %% store.navigation
+        m31_f7["Navigation : reference · optional"]:::reference
+        m31_f6 ~~~ m31_f7
+        %% store.policies
+        m31_f8["Policies : reference[] · optional"]:::reference
+        m31_f7 ~~~ m31_f8
+    end
+
+    subgraph g32["Tax Category · entry"]
+        direction TB
+        m32["tax-category"]:::model
+        %% tax-category.name
+        m32_f0["Name : string · required · localized"]:::scalar
+        m32 ~~~ m32_f0
+        %% tax-category.key
+        m32_f1["Key : string · optional"]:::scalar
+        m32_f0 ~~~ m32_f1
+        %% tax-category.description
+        m32_f2["Description : text · optional"]:::scalar
+        m32_f1 ~~~ m32_f2
+        %% tax-category.rates
+        m32_f3["Rates : json[] · optional"]:::scalar
+        m32_f2 ~~~ m32_f3
+    end
+
+    subgraph g33["Warehouse · entry"]
+        direction TB
+        m33["warehouse"]:::model
+        %% warehouse.name
+        m33_f0["Name : string · required · localized"]:::scalar
+        m33 ~~~ m33_f0
+        %% warehouse.code
+        m33_f1["Code : string · optional"]:::scalar
+        m33_f0 ~~~ m33_f1
+        %% warehouse.address
+        m33_f2["Address : object · optional"]:::embedded
+        m33_f1 ~~~ m33_f2
+        %% warehouse.shipping-methods
+        m33_f3["Shipping methods : reference[] · optional"]:::reference
+        m33_f2 ~~~ m33_f3
+        %% warehouse.timezone
+        m33_f4["Timezone : string · optional"]:::scalar
+        m33_f3 ~~~ m33_f4
+    end
+
+    %% Content relationships
+    m2_f0 -->|"reference · one"| m1
+    m3_f5 -.->|"embedded · one"| m26
+    m4_f5 -->|"reference · one"| m22
+    m4_f6 -->|"reference · many"| m11
+    m5_f3 -->|"reference · one"| m5
+    m5_f6 -.->|"embedded · one"| m26
+    m6_f4 -.->|"embedded · one"| m0
+    m8_f3 -.->|"embedded · one"| m12
+    m8_f4 -->|"reference · one"| m20
+    m9_f4 -.->|"embedded · one"| m12
+    m10_f1 -->|"reference · one"| m6
+    m10_f2 -->|"reference · one"| m33
+    m11_f2 -.->|"embedded · one"| m26
+    m11_f3 -->|"reference · many"| m9
+    m11_f3 -->|"reference · many"| m21
+    m11_f3 -->|"reference · many"| m8
+    m11_f4 -->|"reference · one"| m4
+    m12_f2 -->|"reference · one"| m20
+    m12_f2 -->|"reference · one"| m5
+    m12_f2 -->|"reference · one"| m11
+    m12_f2 -->|"reference · one"| m17
+    m14_f1 -.->|"embedded · many"| m15
+    m15_f1 -.->|"embedded · one"| m12
+    m15_f2 -.->|"embedded · many"| m15
+    m17_f6 -->|"reference · many"| m17
+    m18_f1 -.->|"embedded · one"| m13
+    m18_f2 -.->|"embedded · one"| m13
+    m18_f3 -->|"reference · one"| m6
+    m18_f4 -->|"reference · one"| m7
+    m18_f8 -.->|"embedded · many"| m19
+    m19_f1 -.->|"embedded · one"| m13
+    m20_f4 -->|"reference · one"| m23
+    m20_f5 -->|"reference · one"| m3
+    m20_f6 -->|"reference · many"| m5
+    m20_f7 -->|"reference · many"| m24
+    m20_f9 -.->|"embedded · one"| m26
+    m20_f10 -->|"reference · many"| m20
+    m20_f11 -->|"reference · one"| m30
+    m21_f1 -->|"reference · one"| m22
+    m21_f2 -->|"reference · many"| m20
+    m21_f4 -.->|"embedded · one"| m12
+    m22_f2 -->|"reference · many"| m20
+    m23_f3 -->|"reference · many"| m1
+    m24_f2 -->|"reference · many"| m18
+    m24_f3 -->|"reference · many"| m10
+    m24_f5 -.->|"embedded · many"| m2
+    m24_f6 -.->|"embedded · one"| m16
+    m24_f9 -->|"reference · one"| m27
+    m24_f10 -->|"reference · one"| m32
+    m25_f5 -->|"reference · many"| m20
+    m25_f6 -->|"reference · many"| m5
+    m25_f7 -->|"reference · many"| m7
+    m25_f8 -->|"reference · one"| m4
+    m28_f3 -->|"reference · one"| m32
+    m28_f4 -->|"reference · many"| m29
+    m28_f5 -.->|"embedded · one"| m13
+    m30_f4 -->|"reference · many"| m23
+    m31_f4 -->|"reference · many"| m6
+    m31_f5 -->|"reference · many"| m22
+    m31_f6 -->|"reference · one"| m11
+    m31_f7 -->|"reference · one"| m14
+    m31_f8 -->|"reference · many"| m17
+    m33_f2 -.->|"embedded · one"| m0
+    m33_f3 -->|"reference · many"| m28
