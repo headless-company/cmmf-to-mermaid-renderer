@@ -1,0 +1,213 @@
+%%{init: {"flowchart": {"htmlLabels": false, "curve": "linear"}}}%%
+flowchart TB
+    %% Each field is a real node; relationships originate at that field.
+    %% Solid arrows: references. Dashed arrows: embedded objects.
+    %% Invisible links retain field order and are not content relationships.
+    %% Targets are model ID header nodes, not fields on the target model.
+    classDef model fill:#25233b,color:#ffffff,stroke:#25233b,font-weight:bold
+    classDef scalar fill:#ffffff,color:#25233b,stroke:#c9c7d4
+    classDef reference fill:#ede9ff,color:#25233b,stroke:#7963cb,stroke-width:2px
+    classDef embedded fill:#e5f5f0,color:#173e34,stroke:#418976,stroke-width:2px
+    subgraph g3["Brand · entry"]
+        direction TB
+        m3["brand"]:::model
+        %% brand.name
+        m3_f0["Name : string · required · localized"]:::scalar
+        m3 ~~~ m3_f0
+        %% brand.slug
+        m3_f1["Slug : slug · required"]:::scalar
+        m3_f0 ~~~ m3_f1
+        %% brand.logo
+        m3_f2["Logo : asset · optional"]:::scalar
+        m3_f1 ~~~ m3_f2
+        %% brand.story
+        m3_f3["Story : richText · optional · localized"]:::scalar
+        m3_f2 ~~~ m3_f3
+        %% brand.website
+        m3_f4["Website : string · optional"]:::scalar
+        m3_f3 ~~~ m3_f4
+        %% brand.seo
+        m3_f5["Seo : object · optional"]:::embedded
+        m3_f4 ~~~ m3_f5
+    end
+
+    subgraph g5["Category · taxonomy"]
+        direction TB
+        m5["category"]:::model
+        %% category.name
+        m5_f0["Name : string · required · localized"]:::scalar
+        m5 ~~~ m5_f0
+        %% category.slug
+        m5_f1["Slug : slug · required"]:::scalar
+        m5_f0 ~~~ m5_f1
+        %% category.description
+        m5_f2["Description : text · optional"]:::scalar
+        m5_f1 ~~~ m5_f2
+        %% category.parent
+        m5_f3["Parent : reference · optional"]:::reference
+        m5_f2 ~~~ m5_f3
+        %% category.image
+        m5_f4["Image : asset · optional"]:::scalar
+        m5_f3 ~~~ m5_f4
+        %% category.sort-order
+        m5_f5["Sort order : number · optional"]:::scalar
+        m5_f4 ~~~ m5_f5
+        %% category.seo
+        m5_f6["Seo : object · optional"]:::embedded
+        m5_f5 ~~~ m5_f6
+    end
+
+    subgraph g20["Product · entry"]
+        direction TB
+        m20["product"]:::model
+        %% product.name
+        m20_f0["Name : string · required · localized"]:::scalar
+        m20 ~~~ m20_f0
+        %% product.slug
+        m20_f1["Slug : slug · required"]:::scalar
+        m20_f0 ~~~ m20_f1
+        %% product.summary
+        m20_f2["Summary : text · optional · localized"]:::scalar
+        m20_f1 ~~~ m20_f2
+        %% product.description
+        m20_f3["Description : richText · optional · localized"]:::scalar
+        m20_f2 ~~~ m20_f3
+        %% product.product-type
+        m20_f4["Product type : reference · required"]:::reference
+        m20_f3 ~~~ m20_f4
+        %% product.brand
+        m20_f5["Brand : reference · optional"]:::reference
+        m20_f4 ~~~ m20_f5
+        %% product.categories
+        m20_f6["Categories : reference[] · optional"]:::reference
+        m20_f5 ~~~ m20_f6
+        %% product.variants
+        m20_f7["Variants : reference[] · required"]:::reference
+        m20_f6 ~~~ m20_f7
+        %% product.gallery
+        m20_f8["Gallery : asset[] · optional"]:::scalar
+        m20_f7 ~~~ m20_f8
+        %% product.seo
+        m20_f9["Seo : object · optional"]:::embedded
+        m20_f8 ~~~ m20_f9
+        %% product.related-products
+        m20_f10["Related products : reference[] · optional"]:::reference
+        m20_f9 ~~~ m20_f10
+        %% product.size-guide
+        m20_f11["Size guide : reference · optional"]:::reference
+        m20_f10 ~~~ m20_f11
+        %% product.launch-date
+        m20_f12["Launch date : date · optional"]:::scalar
+        m20_f11 ~~~ m20_f12
+        %% product.search-keywords
+        m20_f13["Search keywords : string[] · optional"]:::scalar
+        m20_f12 ~~~ m20_f13
+    end
+
+    subgraph g23["Product Type · entry"]
+        direction TB
+        m23["product-type"]:::model
+        %% product-type.name
+        m23_f0["Name : string · required · localized"]:::scalar
+        m23 ~~~ m23_f0
+        %% product-type.key
+        m23_f1["Key : string · required"]:::scalar
+        m23_f0 ~~~ m23_f1
+        %% product-type.description
+        m23_f2["Description : text · optional"]:::scalar
+        m23_f1 ~~~ m23_f2
+        %% product-type.attribute-definitions
+        m23_f3["Attribute definitions : reference[] · optional"]:::reference
+        m23_f2 ~~~ m23_f3
+    end
+
+    subgraph g24["Product Variant · entry"]
+        direction TB
+        m24["product-variant"]:::model
+        %% product-variant.sku
+        m24_f0["Sku : string · required"]:::scalar
+        m24 ~~~ m24_f0
+        %% product-variant.barcode
+        m24_f1["Barcode : string · optional"]:::scalar
+        m24_f0 ~~~ m24_f1
+        %% product-variant.prices
+        m24_f2["Prices : reference[] · optional"]:::reference
+        m24_f1 ~~~ m24_f2
+        %% product-variant.inventory
+        m24_f3["Inventory : reference[] · optional"]:::reference
+        m24_f2 ~~~ m24_f3
+        %% product-variant.images
+        m24_f4["Images : asset[] · optional"]:::scalar
+        m24_f3 ~~~ m24_f4
+        %% product-variant.attributes
+        m24_f5["Attributes : object[] · optional"]:::embedded
+        m24_f4 ~~~ m24_f5
+        %% product-variant.dimensions
+        m24_f6["Dimensions : object · optional"]:::embedded
+        m24_f5 ~~~ m24_f6
+        %% product-variant.weight
+        m24_f7["Weight : number · optional"]:::scalar
+        m24_f6 ~~~ m24_f7
+        %% product-variant.is-master
+        m24_f8["Is master : boolean · optional"]:::scalar
+        m24_f7 ~~~ m24_f8
+        %% product-variant.shipping-category
+        m24_f9["Shipping category : reference · optional"]:::reference
+        m24_f8 ~~~ m24_f9
+        %% product-variant.tax-category
+        m24_f10["Tax category : reference · optional"]:::reference
+        m24_f9 ~~~ m24_f10
+    end
+
+    subgraph g26["Seo Metadata · object"]
+        direction TB
+        m26["seo-metadata"]:::model
+        %% seo-metadata.title
+        m26_f0["Title : string · optional · localized"]:::scalar
+        m26 ~~~ m26_f0
+        %% seo-metadata.description
+        m26_f1["Description : text · optional · localized"]:::scalar
+        m26_f0 ~~~ m26_f1
+        %% seo-metadata.social-image
+        m26_f2["Social image : asset · optional"]:::scalar
+        m26_f1 ~~~ m26_f2
+        %% seo-metadata.canonical-url
+        m26_f3["Canonical url : string · optional"]:::scalar
+        m26_f2 ~~~ m26_f3
+        %% seo-metadata.no-index
+        m26_f4["No index : boolean · optional"]:::scalar
+        m26_f3 ~~~ m26_f4
+    end
+
+    subgraph g30["Size Guide · entry"]
+        direction TB
+        m30["size-guide"]:::model
+        %% size-guide.name
+        m30_f0["Name : string · required · localized"]:::scalar
+        m30 ~~~ m30_f0
+        %% size-guide.instructions
+        m30_f1["Instructions : richText · optional · localized"]:::scalar
+        m30_f0 ~~~ m30_f1
+        %% size-guide.measurement-table
+        m30_f2["Measurement table : json · optional"]:::scalar
+        m30_f1 ~~~ m30_f2
+        %% size-guide.diagram
+        m30_f3["Diagram : asset · optional"]:::scalar
+        m30_f2 ~~~ m30_f3
+        %% size-guide.product-types
+        m30_f4["Product types : reference[] · optional"]:::reference
+        m30_f3 ~~~ m30_f4
+    end
+
+    %% Content relationships
+    m3_f5 -.->|"embedded · one"| m26
+    m5_f3 -->|"reference · one"| m5
+    m5_f6 -.->|"embedded · one"| m26
+    m20_f4 -->|"reference · one"| m23
+    m20_f5 -->|"reference · one"| m3
+    m20_f6 -->|"reference · many"| m5
+    m20_f7 -->|"reference · many"| m24
+    m20_f9 -.->|"embedded · one"| m26
+    m20_f10 -->|"reference · many"| m20
+    m20_f11 -->|"reference · one"| m30
+    m30_f4 -->|"reference · many"| m23

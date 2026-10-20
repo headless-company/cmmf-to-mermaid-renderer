@@ -1,0 +1,14 @@
+{
+  "input": "/Users/djeglin/Projects/HeadlessCo/cmmf-visual-editor/examples/ecommerce.cmmf.json",
+  "sha256": "08c2dc179d43234cc22777be632cb164ae1aea4593dc262b4c5ecd54309fe3ec",
+  "full": {
+    "models": 34,
+    "fields": 201,
+    "relationships": 64
+  },
+  "focused": {
+    "models": 7,
+    "fields": 52,
+    "relationships": 11
+  }
+}

@@ -1,0 +1,2417 @@
+{
+  "name": "Large ecommerce store",
+  "models": [
+    {
+      "id": "product",
+      "name": "Product",
+      "kind": "entry",
+      "description": "A merchandising concept with one or more sellable variants. Prices and stock belong to variants.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "slug",
+          "required": true,
+          "validations": {
+            "regex": "^[a-z0-9-]+$"
+          }
+        },
+        {
+          "id": "summary",
+          "name": "Summary",
+          "type": "text",
+          "localisation": true
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "richText",
+          "localisation": true,
+          "richTextConfig": {
+            "marks": [
+              "bold",
+              "italic",
+              "link"
+            ],
+            "blocks": [
+              "paragraph",
+              "heading-2",
+              "quote"
+            ],
+            "embeds": [
+              {
+                "kind": "asset"
+              }
+            ]
+          }
+        },
+        {
+          "id": "product-type",
+          "name": "Product type",
+          "type": "reference",
+          "targets": [
+            "product-type"
+          ],
+          "list": false,
+          "required": true,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "brand",
+          "name": "Brand",
+          "type": "reference",
+          "targets": [
+            "brand"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "categories",
+          "name": "Categories",
+          "type": "reference",
+          "targets": [
+            "category"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "variants",
+          "name": "Variants",
+          "type": "reference",
+          "targets": [
+            "product-variant"
+          ],
+          "list": true,
+          "required": true,
+          "relation": {
+            "ownership": "contained",
+            "ordered": true
+          }
+        },
+        {
+          "id": "gallery",
+          "name": "Gallery",
+          "type": "asset",
+          "list": true,
+          "validations": {
+            "mimeTypes": [
+              "image/jpeg",
+              "image/webp"
+            ],
+            "minItems": 1
+          }
+        },
+        {
+          "id": "seo",
+          "name": "Seo",
+          "type": "object",
+          "objectType": "seo-metadata",
+          "list": false
+        },
+        {
+          "id": "related-products",
+          "name": "Related products",
+          "type": "reference",
+          "targets": [
+            "product"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "size-guide",
+          "name": "Size guide",
+          "type": "reference",
+          "targets": [
+            "size-guide"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "launch-date",
+          "name": "Launch date",
+          "type": "date"
+        },
+        {
+          "id": "search-keywords",
+          "name": "Search keywords",
+          "type": "string",
+          "list": true
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A merchandising concept with one or more sellable variants. Prices and stock belong to variants."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "product-variant",
+      "name": "Product Variant",
+      "kind": "entry",
+      "description": "A purchasable SKU. Variant-specific attributes, pricing and stock are kept separate from editorial product content.",
+      "fields": [
+        {
+          "id": "sku",
+          "name": "Sku",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "barcode",
+          "name": "Barcode",
+          "type": "string"
+        },
+        {
+          "id": "prices",
+          "name": "Prices",
+          "type": "reference",
+          "targets": [
+            "price"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "inventory",
+          "name": "Inventory",
+          "type": "reference",
+          "targets": [
+            "inventory-entry"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "images",
+          "name": "Images",
+          "type": "asset",
+          "list": true
+        },
+        {
+          "id": "attributes",
+          "name": "Attributes",
+          "type": "object",
+          "objectType": "attribute-value",
+          "list": true
+        },
+        {
+          "id": "dimensions",
+          "name": "Dimensions",
+          "type": "object",
+          "objectType": "physical-dimensions",
+          "list": false
+        },
+        {
+          "id": "weight",
+          "name": "Weight",
+          "type": "number",
+          "validations": {
+            "min": 0
+          }
+        },
+        {
+          "id": "is-master",
+          "name": "Is master",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "shipping-category",
+          "name": "Shipping category",
+          "type": "reference",
+          "targets": [
+            "shipping-category"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "tax-category",
+          "name": "Tax category",
+          "type": "reference",
+          "targets": [
+            "tax-category"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "sku",
+        "helpText": "A purchasable SKU. Variant-specific attributes, pricing and stock are kept separate from editorial product content."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "product-type",
+      "name": "Product Type",
+      "kind": "entry",
+      "description": "Defines the attributes expected for a family of products.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        },
+        {
+          "id": "attribute-definitions",
+          "name": "Attribute definitions",
+          "type": "reference",
+          "targets": [
+            "attribute-definition"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "contained",
+            "ordered": true
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Defines the attributes expected for a family of products."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "category",
+      "name": "Category",
+      "kind": "taxonomy",
+      "description": "Hierarchical product classification and navigation.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "slug",
+          "required": true,
+          "validations": {
+            "regex": "^[a-z0-9-]+$"
+          }
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        },
+        {
+          "id": "parent",
+          "name": "Parent",
+          "type": "reference",
+          "targets": [
+            "category"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "asset"
+        },
+        {
+          "id": "sort-order",
+          "name": "Sort order",
+          "type": "number",
+          "validations": {
+            "integerOnly": true,
+            "min": 0
+          }
+        },
+        {
+          "id": "seo",
+          "name": "Seo",
+          "type": "object",
+          "objectType": "seo-metadata",
+          "list": false
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Hierarchical product classification and navigation."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "brand",
+      "name": "Brand",
+      "kind": "entry",
+      "description": "Brand identity and editorial positioning.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "slug",
+          "required": true,
+          "validations": {
+            "regex": "^[a-z0-9-]+$"
+          }
+        },
+        {
+          "id": "logo",
+          "name": "Logo",
+          "type": "asset"
+        },
+        {
+          "id": "story",
+          "name": "Story",
+          "type": "richText",
+          "localisation": true,
+          "richTextConfig": {
+            "marks": [
+              "bold",
+              "italic",
+              "link"
+            ],
+            "blocks": [
+              "paragraph",
+              "heading-2",
+              "quote"
+            ],
+            "embeds": [
+              {
+                "kind": "asset"
+              }
+            ]
+          }
+        },
+        {
+          "id": "website",
+          "name": "Website",
+          "type": "string"
+        },
+        {
+          "id": "seo",
+          "name": "Seo",
+          "type": "object",
+          "objectType": "seo-metadata",
+          "list": false
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Brand identity and editorial positioning."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "attribute-definition",
+      "name": "Attribute Definition",
+      "kind": "object",
+      "description": "A named attribute with a type and optional allowed values.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "value-type",
+          "name": "Value type",
+          "type": "enum",
+          "values": [
+            "text",
+            "number",
+            "boolean",
+            "enum"
+          ]
+        },
+        {
+          "id": "required",
+          "name": "Required",
+          "type": "boolean"
+        },
+        {
+          "id": "localised",
+          "name": "Localised",
+          "type": "boolean"
+        },
+        {
+          "id": "allowed-values",
+          "name": "Allowed values",
+          "type": "string",
+          "list": true
+        },
+        {
+          "id": "constraint",
+          "name": "Constraint",
+          "type": "string"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A named attribute with a type and optional allowed values."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "attribute-value",
+      "name": "Attribute Value",
+      "kind": "object",
+      "description": "A value assigned to an attribute on a variant. The commerce platform validates the definition.",
+      "fields": [
+        {
+          "id": "definition",
+          "name": "Definition",
+          "type": "reference",
+          "targets": [
+            "attribute-definition"
+          ],
+          "list": false,
+          "required": true,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "text-value",
+          "name": "Text value",
+          "type": "string"
+        },
+        {
+          "id": "number-value",
+          "name": "Number value",
+          "type": "number"
+        },
+        {
+          "id": "boolean-value",
+          "name": "Boolean value",
+          "type": "boolean"
+        },
+        {
+          "id": "structured-value",
+          "name": "Structured value",
+          "type": "json"
+        }
+      ],
+      "editorial": {
+        "labelField": "definition",
+        "helpText": "A value assigned to an attribute on a variant. The commerce platform validates the definition."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "price",
+      "name": "Price",
+      "kind": "entry",
+      "description": "A variant offer scoped by currency, channel, customer segment and validity.",
+      "fields": [
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "value",
+          "name": "Value",
+          "type": "object",
+          "objectType": "money",
+          "list": false
+        },
+        {
+          "id": "discounted-value",
+          "name": "Discounted value",
+          "type": "object",
+          "objectType": "money",
+          "list": false
+        },
+        {
+          "id": "channel",
+          "name": "Channel",
+          "type": "reference",
+          "targets": [
+            "channel"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "customer-group",
+          "name": "Customer group",
+          "type": "reference",
+          "targets": [
+            "customer-group"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "country",
+          "name": "Country",
+          "type": "string"
+        },
+        {
+          "id": "valid-from",
+          "name": "Valid from",
+          "type": "datetime"
+        },
+        {
+          "id": "valid-until",
+          "name": "Valid until",
+          "type": "datetime"
+        },
+        {
+          "id": "tiers",
+          "name": "Tiers",
+          "type": "object",
+          "objectType": "price-tier",
+          "list": true
+        }
+      ],
+      "editorial": {
+        "labelField": "key",
+        "helpText": "A variant offer scoped by currency, channel, customer segment and validity."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "money",
+      "name": "Money",
+      "kind": "object",
+      "description": "Currency and integer minor-unit amount. The source platform owns rounding and precision.",
+      "fields": [
+        {
+          "id": "currency",
+          "name": "Currency",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "minLength": 3,
+            "maxLength": 3
+          }
+        },
+        {
+          "id": "cent-amount",
+          "name": "Cent amount",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "integerOnly": true,
+            "min": 0
+          }
+        },
+        {
+          "id": "fraction-digits",
+          "name": "Fraction digits",
+          "type": "number",
+          "default": 2,
+          "validations": {
+            "integerOnly": true,
+            "min": 0
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "currency",
+        "helpText": "Currency and integer minor-unit amount. The source platform owns rounding and precision."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "price-tier",
+      "name": "Price Tier",
+      "kind": "object",
+      "description": "Quantity-based pricing for an offer.",
+      "fields": [
+        {
+          "id": "minimum-quantity",
+          "name": "Minimum quantity",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "integerOnly": true
+          }
+        },
+        {
+          "id": "value",
+          "name": "Value",
+          "type": "object",
+          "objectType": "money",
+          "list": false
+        }
+      ],
+      "editorial": {
+        "labelField": "minimum-quantity",
+        "helpText": "Quantity-based pricing for an offer."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "inventory-entry",
+      "name": "Inventory Entry",
+      "kind": "entry",
+      "description": "Stock for a SKU at a supply channel. Runtime stock is owned by the inventory system.",
+      "fields": [
+        {
+          "id": "sku",
+          "name": "Sku",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "supply-channel",
+          "name": "Supply channel",
+          "type": "reference",
+          "targets": [
+            "channel"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "warehouse",
+          "name": "Warehouse",
+          "type": "reference",
+          "targets": [
+            "warehouse"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "quantity-on-stock",
+          "name": "Quantity on stock",
+          "type": "number",
+          "validations": {
+            "min": 0,
+            "integerOnly": true
+          }
+        },
+        {
+          "id": "restockable-in-days",
+          "name": "Restockable in days",
+          "type": "number",
+          "validations": {
+            "min": 0
+          }
+        },
+        {
+          "id": "expected-delivery",
+          "name": "Expected delivery",
+          "type": "datetime"
+        }
+      ],
+      "editorial": {
+        "labelField": "sku",
+        "helpText": "Stock for a SKU at a supply channel. Runtime stock is owned by the inventory system."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "warehouse",
+      "name": "Warehouse",
+      "kind": "entry",
+      "description": "A fulfilment location with address and delivery capabilities.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "code",
+          "name": "Code",
+          "type": "string"
+        },
+        {
+          "id": "address",
+          "name": "Address",
+          "type": "object",
+          "objectType": "address",
+          "list": false
+        },
+        {
+          "id": "shipping-methods",
+          "name": "Shipping methods",
+          "type": "reference",
+          "targets": [
+            "shipping-method"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "timezone",
+          "name": "Timezone",
+          "type": "string"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A fulfilment location with address and delivery capabilities."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "channel",
+      "name": "Channel",
+      "kind": "entry",
+      "description": "A sales or inventory supply context.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "roles",
+          "name": "Roles",
+          "type": "enum",
+          "values": [
+            "InventorySupply",
+            "ProductDistribution",
+            "OrderExport"
+          ]
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        },
+        {
+          "id": "address",
+          "name": "Address",
+          "type": "object",
+          "objectType": "address",
+          "list": false
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A sales or inventory supply context."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "store",
+      "name": "Store",
+      "kind": "settings",
+      "description": "Regional storefront assortment, currencies, locales and editorial entry points.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "locales",
+          "name": "Locales",
+          "type": "string",
+          "list": true
+        },
+        {
+          "id": "currencies",
+          "name": "Currencies",
+          "type": "string",
+          "list": true
+        },
+        {
+          "id": "distribution-channels",
+          "name": "Distribution channels",
+          "type": "reference",
+          "targets": [
+            "channel"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "assortments",
+          "name": "Assortments",
+          "type": "reference",
+          "targets": [
+            "product-selection"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "homepage",
+          "name": "Homepage",
+          "type": "reference",
+          "targets": [
+            "landing-page"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "navigation",
+          "name": "Navigation",
+          "type": "reference",
+          "targets": [
+            "navigation"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "policies",
+          "name": "Policies",
+          "type": "reference",
+          "targets": [
+            "policy-page"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Regional storefront assortment, currencies, locales and editorial entry points."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "product-selection",
+      "name": "Product Selection",
+      "kind": "entry",
+      "description": "A curated assortment that a store can expose.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string"
+        },
+        {
+          "id": "products",
+          "name": "Products",
+          "type": "reference",
+          "targets": [
+            "product"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "mode",
+          "name": "Mode",
+          "type": "enum",
+          "values": [
+            "include",
+            "exclude"
+          ]
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A curated assortment that a store can expose."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "customer-group",
+      "name": "Customer Group",
+      "kind": "entry",
+      "description": "A commercial audience segment used for pricing and promotions.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string"
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A commercial audience segment used for pricing and promotions."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "promotion",
+      "name": "Promotion",
+      "kind": "entry",
+      "description": "Editorial promotion connected to commercial targeting. Discount calculation remains in the commerce engine.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        },
+        {
+          "id": "status",
+          "name": "Status",
+          "type": "enum",
+          "values": [
+            "draft",
+            "scheduled",
+            "active",
+            "expired"
+          ]
+        },
+        {
+          "id": "valid-from",
+          "name": "Valid from",
+          "type": "datetime"
+        },
+        {
+          "id": "valid-until",
+          "name": "Valid until",
+          "type": "datetime"
+        },
+        {
+          "id": "products",
+          "name": "Products",
+          "type": "reference",
+          "targets": [
+            "product"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "categories",
+          "name": "Categories",
+          "type": "reference",
+          "targets": [
+            "category"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "customer-groups",
+          "name": "Customer groups",
+          "type": "reference",
+          "targets": [
+            "customer-group"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "campaign",
+          "name": "Campaign",
+          "type": "reference",
+          "targets": [
+            "campaign"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "banner",
+          "name": "Banner",
+          "type": "asset"
+        },
+        {
+          "id": "terms",
+          "name": "Terms",
+          "type": "text"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Editorial promotion connected to commercial targeting. Discount calculation remains in the commerce engine."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "tax-category",
+      "name": "Tax Category",
+      "kind": "entry",
+      "description": "Named taxation policy interpreted by the commerce engine.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string"
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        },
+        {
+          "id": "rates",
+          "name": "Rates",
+          "type": "json",
+          "list": true
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Named taxation policy interpreted by the commerce engine."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "shipping-category",
+      "name": "Shipping Category",
+      "kind": "taxonomy",
+      "description": "Groups products with comparable fulfilment needs.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string"
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Groups products with comparable fulfilment needs."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "shipping-method",
+      "name": "Shipping Method",
+      "kind": "entry",
+      "description": "A delivery service and its geographic and commercial conditions.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "key",
+          "name": "Key",
+          "type": "string"
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text"
+        },
+        {
+          "id": "tax-category",
+          "name": "Tax category",
+          "type": "reference",
+          "targets": [
+            "tax-category"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "zones",
+          "name": "Zones",
+          "type": "reference",
+          "targets": [
+            "shipping-zone"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "base-price",
+          "name": "Base price",
+          "type": "object",
+          "objectType": "money",
+          "list": false
+        },
+        {
+          "id": "estimated-days",
+          "name": "Estimated days",
+          "type": "number",
+          "validations": {
+            "min": 0,
+            "integerOnly": true
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A delivery service and its geographic and commercial conditions."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "shipping-zone",
+      "name": "Shipping Zone",
+      "kind": "entry",
+      "description": "Supported destinations for a shipping method.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "countries",
+          "name": "Countries",
+          "type": "string",
+          "list": true,
+          "validations": {
+            "minLength": 2,
+            "maxLength": 2,
+            "uniqueItems": true
+          }
+        },
+        {
+          "id": "regions",
+          "name": "Regions",
+          "type": "string",
+          "list": true
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Supported destinations for a shipping method."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "address",
+      "name": "Address",
+      "kind": "object",
+      "description": "A reusable postal address structure.",
+      "fields": [
+        {
+          "id": "first-name",
+          "name": "First name",
+          "type": "string"
+        },
+        {
+          "id": "last-name",
+          "name": "Last name",
+          "type": "string"
+        },
+        {
+          "id": "company",
+          "name": "Company",
+          "type": "string"
+        },
+        {
+          "id": "street",
+          "name": "Street",
+          "type": "string"
+        },
+        {
+          "id": "additional-line",
+          "name": "Additional line",
+          "type": "string"
+        },
+        {
+          "id": "city",
+          "name": "City",
+          "type": "string"
+        },
+        {
+          "id": "postal-code",
+          "name": "Postal code",
+          "type": "string"
+        },
+        {
+          "id": "country",
+          "name": "Country",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "region",
+          "name": "Region",
+          "type": "string"
+        }
+      ],
+      "editorial": {
+        "labelField": "first-name",
+        "helpText": "A reusable postal address structure."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "physical-dimensions",
+      "name": "Physical Dimensions",
+      "kind": "object",
+      "description": "Variant package or product measurements with an explicit unit.",
+      "fields": [
+        {
+          "id": "width",
+          "name": "Width",
+          "type": "number",
+          "validations": {
+            "min": 0
+          }
+        },
+        {
+          "id": "height",
+          "name": "Height",
+          "type": "number",
+          "validations": {
+            "min": 0
+          }
+        },
+        {
+          "id": "depth",
+          "name": "Depth",
+          "type": "number",
+          "validations": {
+            "min": 0
+          }
+        },
+        {
+          "id": "unit",
+          "name": "Unit",
+          "type": "enum",
+          "values": [
+            "mm",
+            "cm",
+            "m"
+          ]
+        },
+        {
+          "id": "packaged",
+          "name": "Packaged",
+          "type": "boolean"
+        }
+      ],
+      "editorial": {
+        "labelField": "width",
+        "helpText": "Variant package or product measurements with an explicit unit."
+      },
+      "governance": {
+        "owner": "Commerce team",
+        "status": "active"
+      },
+      "tags": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "landing-page",
+      "name": "Landing Page",
+      "kind": "entry",
+      "description": "A storefront page assembled from reusable editorial components.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "slug",
+          "required": true,
+          "validations": {
+            "regex": "^[a-z0-9-]+$"
+          }
+        },
+        {
+          "id": "seo",
+          "name": "Seo",
+          "type": "object",
+          "objectType": "seo-metadata",
+          "list": false
+        },
+        {
+          "id": "blocks",
+          "name": "Blocks",
+          "type": "reference",
+          "targets": [
+            "hero",
+            "product-grid",
+            "editorial-card"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "contained",
+            "ordered": true
+          }
+        },
+        {
+          "id": "campaign",
+          "name": "Campaign",
+          "type": "reference",
+          "targets": [
+            "campaign"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "publish-at",
+          "name": "Publish at",
+          "type": "datetime"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A storefront page assembled from reusable editorial components."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "hero",
+      "name": "Hero",
+      "kind": "component",
+      "description": "A campaign hero with a clear message, media and destination.",
+      "fields": [
+        {
+          "id": "headline",
+          "name": "Headline",
+          "type": "string",
+          "required": true,
+          "localisation": true
+        },
+        {
+          "id": "summary",
+          "name": "Summary",
+          "type": "text",
+          "localisation": true
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "asset"
+        },
+        {
+          "id": "mobile-image",
+          "name": "Mobile image",
+          "type": "asset"
+        },
+        {
+          "id": "call-to-action",
+          "name": "Call to action",
+          "type": "object",
+          "objectType": "link",
+          "list": false
+        },
+        {
+          "id": "theme",
+          "name": "Theme",
+          "type": "enum",
+          "values": [
+            "light",
+            "dark"
+          ]
+        }
+      ],
+      "editorial": {
+        "labelField": "headline",
+        "helpText": "A campaign hero with a clear message, media and destination."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "product-grid",
+      "name": "Product Grid",
+      "kind": "component",
+      "description": "A product selection with editorial context.",
+      "fields": [
+        {
+          "id": "heading",
+          "name": "Heading",
+          "type": "string",
+          "localisation": true
+        },
+        {
+          "id": "selection",
+          "name": "Selection",
+          "type": "reference",
+          "targets": [
+            "product-selection"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "products",
+          "name": "Products",
+          "type": "reference",
+          "targets": [
+            "product"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "maximum-products",
+          "name": "Maximum products",
+          "type": "number",
+          "default": 12,
+          "validations": {
+            "min": 1,
+            "max": 48,
+            "integerOnly": true
+          }
+        },
+        {
+          "id": "call-to-action",
+          "name": "Call to action",
+          "type": "object",
+          "objectType": "link",
+          "list": false
+        }
+      ],
+      "editorial": {
+        "labelField": "heading",
+        "helpText": "A product selection with editorial context."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "editorial-card",
+      "name": "Editorial Card",
+      "kind": "component",
+      "description": "An editorial teaser linking to a story or product.",
+      "fields": [
+        {
+          "id": "heading",
+          "name": "Heading",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "summary",
+          "name": "Summary",
+          "type": "text"
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "asset"
+        },
+        {
+          "id": "link",
+          "name": "Link",
+          "type": "object",
+          "objectType": "link",
+          "list": false
+        },
+        {
+          "id": "related-product",
+          "name": "Related product",
+          "type": "reference",
+          "targets": [
+            "product"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "heading",
+        "helpText": "An editorial teaser linking to a story or product."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "campaign",
+      "name": "Campaign",
+      "kind": "entry",
+      "description": "A cross-channel editorial campaign with an assortment and active dates.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "slug",
+          "required": true,
+          "validations": {
+            "regex": "^[a-z0-9-]+$"
+          }
+        },
+        {
+          "id": "brief",
+          "name": "Brief",
+          "type": "richText",
+          "localisation": true,
+          "richTextConfig": {
+            "marks": [
+              "bold",
+              "italic",
+              "link"
+            ],
+            "blocks": [
+              "paragraph",
+              "heading-2",
+              "quote"
+            ],
+            "embeds": [
+              {
+                "kind": "asset"
+              }
+            ]
+          }
+        },
+        {
+          "id": "starts-at",
+          "name": "Starts at",
+          "type": "datetime"
+        },
+        {
+          "id": "ends-at",
+          "name": "Ends at",
+          "type": "datetime"
+        },
+        {
+          "id": "selection",
+          "name": "Selection",
+          "type": "reference",
+          "targets": [
+            "product-selection"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "pages",
+          "name": "Pages",
+          "type": "reference",
+          "targets": [
+            "landing-page"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        },
+        {
+          "id": "channels",
+          "name": "Channels",
+          "type": "enum",
+          "values": [
+            "web",
+            "email",
+            "social"
+          ],
+          "list": true
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A cross-channel editorial campaign with an assortment and active dates."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "navigation",
+      "name": "Navigation",
+      "kind": "settings",
+      "description": "A reusable navigation tree for a storefront.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "items",
+          "name": "Items",
+          "type": "object",
+          "objectType": "navigation-item",
+          "list": true
+        },
+        {
+          "id": "locale",
+          "name": "Locale",
+          "type": "string"
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "A reusable navigation tree for a storefront."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "navigation-item",
+      "name": "Navigation Item",
+      "kind": "object",
+      "description": "A labelled navigation destination with optional nested items.",
+      "fields": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "string",
+          "required": true,
+          "localisation": true
+        },
+        {
+          "id": "destination",
+          "name": "Destination",
+          "type": "object",
+          "objectType": "link",
+          "list": false
+        },
+        {
+          "id": "children",
+          "name": "Children",
+          "type": "object",
+          "objectType": "navigation-item",
+          "list": true
+        },
+        {
+          "id": "highlighted",
+          "name": "Highlighted",
+          "type": "boolean"
+        }
+      ],
+      "editorial": {
+        "labelField": "label",
+        "helpText": "A labelled navigation destination with optional nested items."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "link",
+      "name": "Link",
+      "kind": "object",
+      "description": "A destination with accessible link text and either a URL or an internal target.",
+      "fields": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "id": "url",
+          "name": "Url",
+          "type": "string"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "type": "reference",
+          "targets": [
+            "product",
+            "category",
+            "landing-page",
+            "policy-page"
+          ],
+          "list": false,
+          "required": false,
+          "relation": {
+            "ownership": "linked"
+          }
+        },
+        {
+          "id": "open-in-new-tab",
+          "name": "Open in new tab",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "editorial": {
+        "labelField": "label",
+        "helpText": "A destination with accessible link text and either a URL or an internal target."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "seo-metadata",
+      "name": "Seo Metadata",
+      "kind": "object",
+      "description": "Search metadata with explicit editorial limits.",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "string",
+          "localisation": true,
+          "validations": {
+            "maxLength": 60
+          }
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "text",
+          "localisation": true,
+          "validations": {
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "social-image",
+          "name": "Social image",
+          "type": "asset"
+        },
+        {
+          "id": "canonical-url",
+          "name": "Canonical url",
+          "type": "string"
+        },
+        {
+          "id": "no-index",
+          "name": "No index",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "editorial": {
+        "labelField": "title",
+        "helpText": "Search metadata with explicit editorial limits."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "size-guide",
+      "name": "Size Guide",
+      "kind": "entry",
+      "description": "Sizing advice for a product family.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "type": "richText",
+          "localisation": true,
+          "richTextConfig": {
+            "marks": [
+              "bold",
+              "italic",
+              "link"
+            ],
+            "blocks": [
+              "paragraph",
+              "heading-2",
+              "quote"
+            ],
+            "embeds": [
+              {
+                "kind": "asset"
+              }
+            ]
+          }
+        },
+        {
+          "id": "measurement-table",
+          "name": "Measurement table",
+          "type": "json"
+        },
+        {
+          "id": "diagram",
+          "name": "Diagram",
+          "type": "asset"
+        },
+        {
+          "id": "product-types",
+          "name": "Product types",
+          "type": "reference",
+          "targets": [
+            "product-type"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Sizing advice for a product family."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    },
+    {
+      "id": "policy-page",
+      "name": "Policy Page",
+      "kind": "entry",
+      "description": "Regional delivery, returns and legal information.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "Name",
+          "type": "string",
+          "required": true,
+          "localisation": true,
+          "validations": {
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "slug",
+          "required": true,
+          "validations": {
+            "regex": "^[a-z0-9-]+$"
+          }
+        },
+        {
+          "id": "policy-type",
+          "name": "Policy type",
+          "type": "enum",
+          "values": [
+            "returns",
+            "delivery",
+            "privacy",
+            "terms"
+          ]
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "type": "richText",
+          "localisation": true,
+          "richTextConfig": {
+            "marks": [
+              "bold",
+              "italic",
+              "link"
+            ],
+            "blocks": [
+              "paragraph",
+              "heading-2",
+              "quote"
+            ],
+            "embeds": [
+              {
+                "kind": "asset"
+              }
+            ]
+          }
+        },
+        {
+          "id": "effective-from",
+          "name": "Effective from",
+          "type": "date"
+        },
+        {
+          "id": "last-reviewed",
+          "name": "Last reviewed",
+          "type": "date"
+        },
+        {
+          "id": "related-policies",
+          "name": "Related policies",
+          "type": "reference",
+          "targets": [
+            "policy-page"
+          ],
+          "list": true,
+          "required": false,
+          "relation": {
+            "ownership": "linked",
+            "ordered": true
+          }
+        }
+      ],
+      "editorial": {
+        "labelField": "name",
+        "helpText": "Regional delivery, returns and legal information."
+      },
+      "governance": {
+        "owner": "Editorial team",
+        "status": "active"
+      },
+      "tags": [
+        "editorial"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "ecommerce-flowchart",
+    "width": 8204.16015625,
+    "height": 10266,
+    "relationships": 64,
+    "edges": 265,
+    "nodes": 235,
+    "mermaidVersion": "11.12.0"
+  },
+  {
+    "id": "product-flowchart",
+    "width": 2691.30859375,
+    "height": 3428,
+    "relationships": 11,
+    "edges": 63,
+    "nodes": 59,
+    "mermaidVersion": "11.12.0"
+  }
+]
